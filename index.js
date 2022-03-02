@@ -56,6 +56,12 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end();
 });
 
+const nameIsDuplicate = (name) => {
+  return persons.some(person =>
+    person.name.localeCompare(name, undefined, { sensitivity: 'base' }) === 0
+  );
+};
+
 const generateId = () => {
   return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 };
@@ -69,6 +75,16 @@ app.post('/api/persons', (request, response) => {
       .json(
         {
           error: 'Missing properties \'name\' and / or \'number\' of person'
+        }
+      );
+  }
+
+  if (nameIsDuplicate(body.name)) {
+    return response
+      .status(422)
+      .json(
+        {
+          error: 'Property \'name\' must be unique'
         }
       );
   }
