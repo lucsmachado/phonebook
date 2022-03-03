@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:ui": "rm -rf build && cd ../../fullstackopen/part2/phonebook && npm run build && cp -r build ../../../node/phonebook-backend",
+    "deploy": "git add . && git commit -m \"step11\" && git push heroku master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Lucas Machado",
