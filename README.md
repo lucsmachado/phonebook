@@ -4,4 +4,4 @@ Project developed as an exercise for the Full Stack Open course from the Univers
 - Frontend: React
 
 ## Deployment
-The app is hosted on [Heroku](https://whispering-stream-48869.herokuapp.com/).
+The app is hosted on [Heroku](https://fullstack-backend-phonebook.herokuapp.com/).
