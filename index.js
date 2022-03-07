@@ -108,7 +108,7 @@ app.post('/api/persons', (request, response) => {
       );
   }
 
-  if (nameIsDuplicate(body.name)) {
+  /* if (nameIsDuplicate(body.name)) {
     return response
       .status(422)
       .json(
@@ -116,15 +116,18 @@ app.post('/api/persons', (request, response) => {
           error: 'Property \'name\' must be unique'
         }
       );
-  }
+  } */
 
-  const person = {
+  const person = new Person({
     name: body.name,
-    number: body.number,
-    id: generateId()
-  };
-  persons = persons.concat(person);
-  response.json(person);
+    number: body.number
+  });
+
+  person
+    .save()
+    .then(savedPerson => {
+      response.json(savedPerson);
+    });
 });
 
 const PORT = process.env.PORT;
