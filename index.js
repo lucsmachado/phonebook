@@ -9,8 +9,8 @@ morgan.token('request-body', (request, response) => JSON.stringify(request.body)
 const app = express();
 
 app.use(cors());
-app.use(express.json());
 app.use(express.static('build'));
+app.use(express.json());
 app.use(morgan((tokens, request, response) => {
   const format = [
     tokens.method(request, response),
@@ -80,9 +80,11 @@ app.get('/api/persons/:id', (request, response) => {
 });
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter(person => person.id !== id);
-  response.status(204).end();
+  Person
+    .findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end();
+    });
 });
 
 const nameIsDuplicate = (name) => {
