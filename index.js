@@ -27,7 +27,7 @@ app.use(morgan((tokens, request, response) => {
     : format.join(' ');
 }));
 
-let persons = [
+/* let persons = [
   { 
     "id": 1,
     "name": "Arto Hellas", 
@@ -48,14 +48,18 @@ let persons = [
     "name": "Mary Poppendieck", 
     "number": "39-23-6423122"
   }
-];
+]; */
 
 app.get('/', (request, response) => {
   response.send('<h1>Phonebook</h1>');
 });
 
 app.get('/info', (request, response) => {
-  response.send(`<p>Phonebook has ${persons.length} entries<br>${new Date()}</p>`);
+  Person
+    .estimatedDocumentCount()
+    .then(result => {
+      response.send(`<p>Phonebook has ${result} entries<br>${new Date()}</p>`);
+    });
 });
 
 app.get('/api/persons', (request, response) => {
