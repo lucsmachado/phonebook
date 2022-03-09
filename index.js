@@ -103,10 +103,10 @@ const generateId = () => {
   return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 };
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body;
 
-  if (!body.name || !body.number) {
+  /* if (!body.name || !body.number) {
     return response
       .status(400)
       .json(
@@ -114,7 +114,7 @@ app.post('/api/persons', (request, response) => {
           error: 'Missing properties \'name\' and / or \'number\' of person'
         }
       );
-  }
+  } */
 
   /* if (nameIsDuplicate(body.name)) {
     return response
@@ -135,7 +135,8 @@ app.post('/api/persons', (request, response) => {
     .save()
     .then(savedPerson => {
       response.json(savedPerson);
-    });
+    })
+    .catch(error => next(error));
 });
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -145,7 +146,7 @@ app.put('/api/persons/:id', (request, response, next) => {
   };
 
   Person
-    .findByIdAndUpdate(request.params.id, replacementPerson, { new: true })
+    .findByIdAndUpdate(request.params.id, replacementPerson, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       response.json(updatedPerson);
     })
@@ -163,6 +164,8 @@ const errorHandler = (error, request, response, next) => {
   
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'Malformed id' });
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).send({ error: error.message });
   }
 
   next(error);

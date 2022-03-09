@@ -10,8 +10,15 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String
+  name: {
+    type: String,
+    minLength: [3, 'Name \'{VALUE}\' is too short. Minimum length is 3'],
+    required: [true, 'Missing name']
+  },
+  number: {
+    type: String,
+    required: [true, 'Missing phone number']
+  }
 });
 
 personSchema.set('toJSON', {
