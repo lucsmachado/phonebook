@@ -9,7 +9,7 @@ $ node mongo.js <password>
 To add a new entry:
 $ node mongo.js <password> <name> <number>`);
   process.exit(1);
-};
+}
 
 mongoose.connect(`mongodb+srv://fullstack:${process.argv[2]}@cluster0.d35w2.mongodb.net/phonebookApp?retryWrites=true&w=majority`);
 
@@ -42,12 +42,12 @@ if (process.argv[3] && process.argv[4]) {
     name: process.argv[3],
     number: process.argv[4]
   });
-  
+
   person
-  .save()
-  .then(result => {
-    console.log(`Added ${result.name} number ${result.number} to phonebook`);
-    mongoose.connection.close();
-    process.exit(0);
-  });
+    .save()
+    .then(result => {
+      console.log(`Added ${result.name} number ${result.number} to phonebook`);
+      mongoose.connection.close();
+      process.exit(0);
+    });
 }

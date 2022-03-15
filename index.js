@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const Person = require('./models/person');
 
-morgan.token('request-body', (request, response) => JSON.stringify(request.body));
+morgan.token('request-body', (request) => JSON.stringify(request.body));
 
 const app = express();
 
@@ -28,24 +28,24 @@ app.use(morgan((tokens, request, response) => {
 }));
 
 /* let persons = [
-  { 
+  {
     "id": 1,
-    "name": "Arto Hellas", 
+    "name": "Arto Hellas",
     "number": "040-123456"
   },
-  { 
+  {
     "id": 2,
-    "name": "Ada Lovelace", 
+    "name": "Ada Lovelace",
     "number": "39-44-5323523"
   },
-  { 
+  {
     "id": 3,
-    "name": "Dan Abramov", 
+    "name": "Dan Abramov",
     "number": "12-43-234345"
   },
-  { 
+  {
     "id": 4,
-    "name": "Mary Poppendieck", 
+    "name": "Mary Poppendieck",
     "number": "39-23-6423122"
   }
 ]; */
@@ -78,7 +78,7 @@ app.get('/api/persons/:id', (request, response, next) => {
         response.statusMessage = `Person with id=${request.params.id} not found`;
         return response.status(404).end();
       }
-      
+
       response.json(person);
     })
     .catch(error => next(error));
@@ -87,13 +87,13 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person
     .findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end();
     })
     .catch(error => next(error));
 });
 
-const nameIsDuplicate = (name) => {
+/* const nameIsDuplicate = (name) => {
   return persons.some(person =>
     person.name.localeCompare(name, undefined, { sensitivity: 'base' }) === 0
   );
@@ -101,7 +101,7 @@ const nameIsDuplicate = (name) => {
 
 const generateId = () => {
   return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-};
+}; */
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body;
@@ -158,13 +158,13 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'Unknown endpoint' });
-}
+};
 
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
-  
+
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'Malformed id' });
   } else if (error.name === 'ValidationError') {
@@ -181,4 +181,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-})
+});

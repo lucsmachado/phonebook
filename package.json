@@ -8,6 +8,7 @@
     "dev": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../../fullstackopen/part2/phonebook && npm run build && cp -r build ../../../node/phonebook-backend",
     "deploy": "git add . && git commit -m \"new deployment\" && git push heroku master",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Lucas Machado",
@@ -20,6 +21,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.11.0",
     "nodemon": "^2.0.15"
   }
 }
